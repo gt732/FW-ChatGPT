@@ -8,15 +8,14 @@ from fortigate_api import Fortigate
 
 openai.api_key = os.getenv("OPENAI_API_KEY")
 model_engine = "gpt-3.5-turbo"
+MAX_CHARS = 4000
 
-# Define the streamlit app
+
 def main():
-    # Set the page title and icon
     st.set_page_config(
         page_title="FortiGPT Troubleshooting Assistant", page_icon=":shield:"
     )
 
-    # Define the sidebar options
     st.sidebar.title("FortiGPT")
     st.sidebar.write("Welcome to the FortiGPT Troubleshooting Assistant!")
     st.sidebar.write("Please fill in the following information to get started:")
@@ -37,9 +36,7 @@ def main():
                         password=device_password,
                     )
                     fgt.login()
-                    # Check if the connection was successful
                     if fgt.is_connected:
-                        # Save the Fortigate object to a variable for reuse
                         st.session_state["fgt_session"] = fgt
                     else:
                         st.write(":x: Login Failed :x:")
@@ -136,15 +133,12 @@ def main():
     st.write("Please click the button below to run the debug commands:")
 
     if st.button("Run Debug Commands"):
-        # Execute the debug commands using netmiko
         device = {
             "device_type": "fortinet",
             "ip": device_ip,
             "username": device_username,
             "password": device_password,
-            # "delay_factor_compat": True,
             "fast_cli": False,
-            "session_log": "netmiko_session.log",
         }
         try:
             with st.spinner("Connecting to device..."):
@@ -157,7 +151,6 @@ def main():
                         command, delay_factor=2, max_loops=100
                     )
                     debug_output += "\n\n"
-                MAX_CHARS = 4000  # Maximum number of characters allowed by ChatGPT API
 
                 if len(debug_output) > MAX_CHARS:
                     debug_output = debug_output[-MAX_CHARS:]
