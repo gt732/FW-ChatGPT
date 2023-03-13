@@ -50,7 +50,7 @@ def main():
             else:
                 st.write(":heavy_check_mark: Logged In :heavy_check_mark:")
     # **********************************************************************************************************************
-    # ******************** SIDE BAR PROBLEM CATEGORY ***********************************************************************
+    # ******************** SIDE BAR PROBLEM CATEGORY LIST*******************************************************************
     # **********************************************************************************************************************
     problem_category = st.sidebar.selectbox(
         "Problem Category", ["", "Performance", "VPN"]
@@ -71,20 +71,27 @@ def main():
             get_vpn_tunnels(),
         )
 
-        def get_phase2_name() -> str:
+        def get_phase2_name(vpn_tunnel_name) -> str:
             data = st.session_state.fgt_session.get(
                 url=f"api/v2/cmdb/vpn.ipsec/phase2-interface/"
             )
             for phase2 in data:
-                if phase2["phase1name"] == vpn_tunnel:
+                if phase2["phase1name"] == vpn_tunnel_name:
                     phase2_name = phase2["name"]
                     return phase2_name
             return None
 
-        phase2_name = get_phase2_name()
+        phase2_name = get_phase2_name(vpn_tunnel)
+
+        # **********************************************************************************************************************
+        # ******************** VPN PROBLEM TYPE LIST ***************************************************************************
+        # **********************************************************************************************************************
 
         problem_type = st.sidebar.selectbox("Problem Type", ["Tunnel Down"])
 
+        # **********************************************************************************************************************
+        # ******************** VPN PROBLEM TYPE TUNNEL DOWN ********************************************************************
+        # **********************************************************************************************************************
         if problem_type == "Tunnel Down":
             debug_prompt_path = os.path.join(
                 "debug_commands", "vpn", "debug_tunnel_down.txt"
@@ -108,10 +115,15 @@ def main():
             documentation_link = "https://community.fortinet.com/t5/FortiGate/Troubleshooting-Tip-IPsec-VPNs-tunnels/ta-p/195955"
 
     # **********************************************************************************************************************
-    # ******************** Performance CATEGORY ****************************************************************************
+    # ******************** PERFORMANCE CATEGORY ****************************************************************************
     # **********************************************************************************************************************
     elif problem_category == "Performance":
         problem_type = st.sidebar.selectbox("Problem Type", ["High Memory"])
+
+        # **********************************************************************************************************************
+        # ******************** PERFORMANCE PROBLEM TYPE HIGH MEMORY  ***********************************************************
+        # **********************************************************************************************************************
+
         if problem_type == "High Memory":
             debug_prompt_path = os.path.join(
                 "debug_commands", "performance", "debug_memory.txt"
