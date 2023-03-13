@@ -1,0 +1,4 @@
+requests
+fortigate-api==1.1.0
+streamlit
+openai
