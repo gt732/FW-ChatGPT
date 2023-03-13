@@ -1,0 +1,2 @@
+get system performance status
+diagnose sys top 5 20 3
