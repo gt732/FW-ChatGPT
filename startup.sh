@@ -4,4 +4,4 @@
 pip install netmiko==3.4.0
 
 # Start the Streamlit app
-streamlit run --server.port 8501 app/app.py
+streamlit run --server.port 8501 /app/app.py

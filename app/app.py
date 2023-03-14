@@ -111,7 +111,7 @@ def main():
         # **********************************************************************************************************************
         if problem_type == "Tunnel Down":
             debug_prompt_path = os.path.join(
-                "..", "debug_commands", "vpn", "debug_tunnel_down.txt"
+                "debug_commands", "vpn", "debug_tunnel_down.txt"
             )
             with open(debug_prompt_path, "r") as f:
                 debug_commands = f.read()
@@ -125,7 +125,7 @@ def main():
                     f"diag vpn tunnel up {phase2_name} {vpn_tunnel} 1"
                 )
             chatgpt_prompt_path = os.path.join(
-                "..", "chatgpt_prompts", "vpn", "tunnel_down.txt"
+                "chatgpt_prompts", "vpn", "tunnel_down.txt"
             )
             with open(chatgpt_prompt_path, "r") as f:
                 chatgpt_prompt = f.read()
@@ -143,13 +143,13 @@ def main():
 
         if problem_type == "High Memory":
             debug_prompt_path = os.path.join(
-                "..", "debug_commands", "performance", "debug_memory.txt"
+                "debug_commands", "performance", "debug_memory.txt"
             )
             with open(debug_prompt_path, "r") as f:
                 debug_commands = f.read()
                 debug_commands = debug_commands.splitlines()
             chatgpt_prompt_path = os.path.join(
-                "..", "chatgpt_prompts", "performance", "high_memory.txt"
+                "chatgpt_prompts", "performance", "high_memory.txt"
             )
             with open(chatgpt_prompt_path, "r") as f:
                 chatgpt_prompt = f.read()
