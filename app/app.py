@@ -21,6 +21,21 @@ def main():
     st.sidebar.write("Please fill in the following information to get started:")
     device_type = st.sidebar.selectbox("Device Type", ["FortiGate"])
     device_ip = st.sidebar.text_input("Device IP Address")
+    scheme = st.sidebar.radio(
+        "HTTP or HTTPS?",
+        (
+            "http",
+            "https",
+        ),
+        horizontal=True,
+    )
+    scheme_port = st.sidebar.text_input(
+        "HTTP/HTTPS Port",
+        placeholder="Empty for HTTP Default: 80, HTTPS Default: 443",
+    )
+    ssh_port = st.sidebar.text_input("SSH Port", placeholder="Empty for Default: 22")
+    if not ssh_port:
+        ssh_port = 22
     device_username = st.sidebar.text_input("Device Username")
     device_password = st.sidebar.text_input("Device Password", type="password")
     # **********************************************************************************************************************
@@ -34,6 +49,8 @@ def main():
                         host=device_ip,
                         username=device_username,
                         password=device_password,
+                        scheme=scheme,
+                        port=scheme_port,
                     )
                     fgt.login()
                     if fgt.is_connected:
@@ -151,6 +168,7 @@ def main():
             "username": device_username,
             "password": device_password,
             "fast_cli": False,
+            "port": ssh_port,
         }
         try:
             with st.spinner("Connecting to device..."):

@@ -21,15 +21,30 @@ FortiGPT Troubleshooting Assistant requires no dependencies to be installed. Ins
 
 ## Installation
 
-To install FortiGPT Troubleshooting Assistant, simply run the following command:
+To run FortiGPT Troubleshooting Assistant, simply follow the steps below:
 
+Clone the repo
 ```
-docker run -p 8501:8501 -e OPENAI_API_KEY=XXXXXXXXXXXXXXX gt732/fortigpt
+git clone https://github.com/gt732/FortiGPT.git
+```
+Change into the app directory
+```
+cd FortiGPT/app/
+```
+Run the docker command. Local volumes allows you to modify the chatgpt prompts and debug commands.
+This will be synced to the container.
+```
+docker run -d \
+  -p 8501:8501 \
+  -v $(pwd)/chatgpt_prompts:/app/chatgpt_prompts \
+  -v $(pwd)/debug_commands:/app/debug_commands \
+  -e OPENAI_API_KEY=your_api_key \
+  gt732/fortigpt
 ```
 
 ## Login Screen
 
-![alt text](https://i.imgur.com/p5kirWy.png)
+![alt text](https://i.imgur.com/4Je8TrR.png)
 ## Demo
 VPN Phase1 Settings mis-match
 ![alt text](https://i.imgur.com/CJnhDhJ.png)
