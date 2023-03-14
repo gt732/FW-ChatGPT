@@ -6,13 +6,14 @@ WORKDIR /app
 # Copy the requirements.txt file to the working directory
 COPY requirements.txt .
 
+# Make sure requests is installed
 RUN pip install requests
 
 # Install the required Python packages
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy the entire contents of the app folder to the working directory
-COPY app/ .
+# Copy the entire app folder to the working directory
+COPY app/ /app/
 
 # Copy the startup script to the working directory
 COPY startup.sh .
