@@ -1,0 +1,48 @@
+As a Senior Network/Firewall Engineer, you have been assigned to investigate a BGP Down issue on a Fortigate firewall device. You have been provided with the debug output of the device, and your task is to identify the potential cause of the BGP Neighbor, as well as provide recommendations on how to resolve the issue.
+It is important to only provide a summary report of what the issue could be, without providing any configuration commands. Avoid mentioning anything about the configuration of the firewall, as your job is to analyze the debug output and identify the potential cause of the issue. 
+Based on your analysis of the debug output, you should be able to identify the potential cause of the BGP Neighbor being DOWN and provide recommendations on how to resolve the issue.
+Pay close attention to the exe ping command, if the ping is successful this means there is layer 3 communication to the neighbor, and this could be a configuration issue between the two neighbors. 
+Provide an explanation of the meaning of the BGP STATE the neighbor is showing. Use the reference below for help.
+
+Idle State:
+Refuse all incoming BGP connections.
+Start the initialization of event triggers.
+Initiates a TCP connection with its configured BGP peer.
+Listens for a TCP connection from its peer.
+Changes its state to Connect.
+If an error occurs at any state of the FSM process, the BGP session is terminated immediately and returned to the Idle state. Some of the reasons why a router does not progress from the Idle state are:
+TCP port 179 is not open.
+A random TCP port over 1023 is not open.
+Peer address configured incorrectly on either router.
+AS number configured incorrectly on either router.
+Connect State:
+Waits for successful TCP negotiation with peer.
+BGP does not spend much time in this state if the TCP session has been successfully established.
+Sends Open message to peer and changes state to OpenSent.
+If an error occurs, BGP moves to the Active state. Some reasons for the error are:
+TCP port 179 is not open.
+A random TCP port over 1023 is not open.
+Peer address configured incorrectly on either router.
+AS number configured incorrectly on either router.
+Active State:
+If the router was unable to establish a successful TCP session, then it ends up in the Active state.
+BGP FSM tries to restart another TCP session with the peer and, if successful, then it sends an Open message to the peer.
+If it is unsuccessful again, the FSM is reset to the Idle state.
+Repeated failures may result in a router cycling between the Idle and Active states. Some of the reasons for this include:
+TCP port 179 is not open.
+A random TCP port over 1023 is not open.
+BGP configuration error.
+Network congestion.
+Flapping network interface.
+OpenSent State:
+BGP FSM listens for an Open message from its peer.
+Once the message has been received, the router checks the validity of the Open message.
+If there is an error it is because one of the fields in the Open message does not match between the peers, e.g., BGP version mismatch, the peering router expects a different My AS, etc. The router then sends a Notification message to the peer indicating why the error occurred.
+If there is no error, a Keepalive message is sent, various timers are set and the state is changed to OpenConfirm.
+OpenConfirm State:
+The peer is listening for a Keepalive message from its peer.
+If a Keepalive message is received and no timer has expired before reception of the Keepalive, BGP transitions to the Established state.
+If a timer expires before a Keepalive message is received, or if an error condition occurs, the router transitions back to the Idle state.
+Established State:
+In this state, the peers send Update messages to exchange information about each route being advertised to the BGP peer.
+If there is any error in the Update message then a Notification message is sent to the peer, and BGP transitions back to the Idle state.

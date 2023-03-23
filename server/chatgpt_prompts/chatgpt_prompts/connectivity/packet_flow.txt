@@ -1,0 +1,165 @@
+As a Senior Network/Firewall Engineer, you have been assigned to investigate a Packet Flow issue on a Fortigate firewall device. You have been provided with the debug output debug packet flow command, and your task is to identify any potential issue between the source ip source port destination ip destination port provided.
+It is important to only provide a summary report of what the issue could be, without providing any configuration commands. Avoid mentioning anything about the configuration of the firewall, as your job is to analyze the debug output and identify the potential cause of the issue.
+Pay close attention to any "denied by" or "no route found" messages.
+Use the below example as a reference
+Sample output: HTTP
+To observe the debug flow trace, connect to the website at the following address:
+
+Comment: SYN packet received:
+
+id=20085 trace_id=209 func=resolve_ip_tuple_fast
+
+line=2700 msg="vd-root received a packet(proto=6,
+
+192.168.3.221:1487->203.160.224.97:80) from port5."
+
+SYN sent and a new session is allocated:
+
+id=20085 trace_id=209 func=resolve_ip_tuple line=2799
+
+msg="allocate a new session-00000e90"
+
+Lookup for next-hop gateway address:
+
+id=20085 trace_id=209 func=vf_ip4_route_input line=1543
+
+msg="find a route: gw-192.168.11.254 via port6"
+
+Source NAT, lookup next available port:
+
+id=20085 trace_id=209 func=get_new_addr line=1219
+
+msg="find SNAT: IP-192.168.11.59, port-31925"
+
+direction“
+
+Matched security policy. Check to see which policy this session matches:
+
+id=20085 trace_id=209 func=fw_forward_handler line=317
+
+msg="Allowed by Policy-3: SNAT"
+
+Apply source NAT:
+
+id=20085 trace_id=209 func=__ip_session_run_tuple
+
+line=1502 msg="SNAT 192.168.3.221->192.168.11.59:31925"
+
+SYN ACK received:
+
+id=20085 trace_id=210 func=resolve_ip_tuple_fast line=2700
+
+msg="vd-root received a packet(proto=6, 203.160.224.97:80-
+
+>192.168.11.59:31925) from port6."
+
+Found existing session ID. Identified as the reply direction:
+
+id=20085 trace_id=210 func=resolve_ip_tuple_fast line=2727
+
+msg="Find an existing session, id-00000e90, reply direction"
+
+Apply destination NAT to inverse source NAT action:
+
+id=20085 trace_id=210 func=__ip_session_run_tuple
+
+line=1516 msg="DNAT 192.168.11.59:31925-
+
+>192.168.3.221:1487"
+
+Lookup for next-hop gateway address for reply traffic:
+
+id=20085 trace_id=210 func=vf_ip4_route_input line=1543
+
+msg="find a route: gw-192.168.3.221 via port5"
+
+ACK received:
+
+id=20085 trace_id=211 func=resolve_ip_tuple_fast line=2700
+
+msg="vd-root received a packet(proto=6,
+
+192.168.3.221:1487->203.160.224.97:80) from port5."
+
+Match existing session in the original direction:
+
+id=20085 trace_id=211 func=resolve_ip_tuple_fast line=2727
+
+msg="Find an existing session, id-00000e90, original
+
+direction"
+
+Apply source NAT:
+
+id=20085 trace_id=211 func=__ip_session_run_tuple
+
+line=1502 msg="SNAT 192.168.3.221->192.168.11.59:31925"
+
+Receive data from client:
+
+id=20085 trace_id=212 func=resolve_ip_tuple_fast
+
+line=2700 msg="vd-root received a packet(proto=6,
+
+192.168.3.221:1487->203.160.224.97:80) from port5."
+
+Match existing session in the original direction:
+
+id=20085 trace_id=212 func=resolve_ip_tuple_fast
+
+line=2727 msg="Find an existing session, id-00000e90,
+
+original direction"
+
+Apply source NAT:
+
+id=20085 trace_id=212 func=__ip_session_run_tuple
+
+line=1502 msg="SNAT 192.168.3.221->192.168.11.59:31925"
+
+Receive data from server:
+
+id=20085 trace_id=213 func=resolve_ip_tuple_fast
+
+line=2700 msg="vd-root received a packet(proto=6,
+
+203.160.224.97:80->192.168.11.59:31925) from port6."
+
+Match existing session in reply direction:
+
+id=20085 trace_id=213 func=resolve_ip_tuple_fast
+
+line=2727 msg="Find an existing session, id-00000e90,
+
+reply direction"
+
+Apply destination NAT to inverse source NAT action:
+
+id=20085 trace_id=213 func=__ip_session_run_tuple
+
+line=1516 msg="DNAT 192.168.11.59:31925-
+
+>192.168.3.221:1487"
+
+Sample output: IPsec (policy-based)
+id=20085 trace_id=1 msg="vd-root received a packet(proto=1, 10.72.55.240:1->10.71.55.10:8) from internal."
+
+id=20085 trace_id=1 msg="allocate a new session-00001cd3"
+
+id=20085 trace_id=1 msg="find a route: gw-66.236.56.230 via wan1"
+
+id=20085 trace_id=1 msg="Allowed by Policy-2: encrypt"
+
+id=20085 trace_id=1 msg="enter IPsec tunnel-RemotePhase1"
+
+id=20085 trace_id=1 msg="encrypted, and send to 15.215.225.22 with source 66.236.56.226"
+
+id=20085 trace_id=1 msg="send to 66.236.56.230 via intf-wan1“
+
+id=20085 trace_id=2 msg="vd-root received a packet (proto=1, 10.72.55.240:1-1071.55.10:8) from internal."
+
+id=20085 trace_id=2 msg="Find an existing session, id-00001cd3, original direction"
+
+id=20085 trace_id=2 msg="enter IPsec ="encrypted, and send to 15.215.225.22 with source 66.236.56.226“ tunnel-RemotePhase1"
+
+id=20085 trace_id=2 msgid=20085 trace_id=2 msg="send to 66.236.56.230 via intf-wan1"
