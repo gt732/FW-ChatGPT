@@ -1,25 +1,29 @@
-FROM python:3.10-slim
+FROM nikolaik/python-nodejs:latest AS ui-build
 
-# Set the working directory to /app
-WORKDIR /app
+WORKDIR /usr/app/
+COPY client/package*.json ./
+RUN npm install
 
-# Copy the requirements.txt file to the working directory
-COPY requirements.txt .
+COPY client ./
+WORKDIR /usr/app/client
+RUN npm run build
 
-# Make sure requests is installed
-RUN pip install requests
+FROM nikolaik/python-nodejs:latest AS server-build
 
-# Install the required Python packages
-RUN pip install --no-cache-dir -r requirements.txt
+WORKDIR /usr/app/
 
-# Copy the entire app folder to the working directory
-COPY app/ /app/
+COPY --from=ui-build /usr/app/build ./client/build/
+WORKDIR /usr/app/server
 
-# Copy the startup script to the working directory
-COPY startup.sh .
+COPY server/package*.json ./
+RUN npm install
 
-# Make the startup script executable
-RUN chmod +x startup.sh
+COPY server ./
 
-# Start the Streamlit app using the startup script
-CMD ["/bin/bash", "startup.sh"]
+RUN pip install netmiko==3.4.0
+
+ENV NODE_ENV=production
+
+EXPOSE 5005
+
+CMD ["node", "server.js"]
