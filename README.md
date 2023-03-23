@@ -5,7 +5,7 @@ FortiGPT Troubleshooting Assistant is a web app that helps network administrator
 
 # Tested on Fortigate 7.2.4 VM
 ## The app uses ReactJS for frontend and NodeJS/Express for backend
----------
+
 ## Getting Started
 
 To use FortiGPT Troubleshooting Assistant, simply select a problem category (e.g. VPN issues) from the sidebar menu, and choose the problem type. The app will gather the debug output from your FortiGate firewall and send it to the ChatGPT API for analysis. The app will then provide you with troubleshooting advice based on the analysis results. If you are not happy with the response from chatGPT you can modify the prompts used in the server folder and rebuild the docker image.
