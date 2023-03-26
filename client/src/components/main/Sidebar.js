@@ -258,6 +258,9 @@ export default function Sidebar() {
               <option style={{ background: '#202324' }} value="problemtype">
                 Problem Type
               </option>
+              <option style={{ background: '#202324' }} value="fortiguard">
+                Fortiguard
+              </option>
               <option style={{ background: '#202324' }} value="highcpu">
                 High CPU
               </option>

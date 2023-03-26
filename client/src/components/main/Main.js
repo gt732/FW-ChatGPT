@@ -7,6 +7,7 @@ import Highmemory from '../system/Highmemory';
 import Bgp from '../routing/Bgp';
 import Packetflow from '../connectivity/Packetflow';
 import Interfaces from '../network/Interfaces';
+import Fortiguard from '../system/Fortiguard';
 
 export default function Main() {
   const { appData } = useContext(AppContext);
@@ -40,6 +41,9 @@ export default function Main() {
         )}
       {appData.problemCategory === 'network' &&
         appData.problemType === 'interfaces' && <Interfaces />}
+
+      {appData.problemCategory === 'system' &&
+        appData.problemType === 'fortiguard' && <Fortiguard />}
 
       {appData.problemCategory === 'system' &&
         appData.problemType === 'highcpu' && <Highcpu />}
