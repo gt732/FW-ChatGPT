@@ -14,6 +14,7 @@ import vpnRoutes from "./routes/vpn/vpnRoutes.js";
 import performanceRoutes from "./routes/performance/performanceRoutes.js";
 import routingRoutes from "./routes/routing/routingRoutes.js";
 import connectivityRoutes from "./routes/connectivity/connectivityRoutes.js";
+import networkRoutes from "./routes/network/networkRoutes.js";
 
 // All Constants are defined here
 const router = express();
@@ -35,6 +36,7 @@ router.use("/vpn", vpnRoutes(config));
 router.use("/performance", performanceRoutes(config));
 router.use("/routing", routingRoutes(config));
 router.use("/connectivity", connectivityRoutes(config));
+router.use("/network", networkRoutes(config));
 router.use(express.static(root));
 
 // Login route

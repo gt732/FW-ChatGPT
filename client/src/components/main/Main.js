@@ -6,6 +6,7 @@ import Highcpu from '../performance/Highcpu';
 import Highmemory from '../performance/Highmemory';
 import Bgp from '../routing/Bgp';
 import Packetflow from '../connectivity/Packetflow';
+import Interfaces from '../network/Interfaces';
 
 export default function Main() {
   const { appData } = useContext(AppContext);
@@ -23,6 +24,7 @@ export default function Main() {
         appData.problemCategory === 'performance' ||
         appData.problemCategory === 'connectivity' ||
         appData.problemCategory === 'vpn' ||
+        appData.problemCategory === 'network' ||
         appData.problemCategory === 'routing') &&
         appData.problemType === 'problemtype' && (
           <>
@@ -36,14 +38,21 @@ export default function Main() {
             <br />
           </>
         )}
+      {appData.problemCategory === 'network' &&
+        appData.problemType === 'interfaces' && <Interfaces />}
+
       {appData.problemCategory === 'performance' &&
         appData.problemType === 'highcpu' && <Highcpu />}
+
       {appData.problemCategory === 'performance' &&
         appData.problemType === 'highmemory' && <Highmemory />}
+
       {appData.problemCategory === 'vpn' &&
         appData.problemType === 'vpndown' && <Vpn />}
+
       {appData.problemCategory === 'routing' &&
         appData.problemType === 'bgp' && <Bgp />}
+
       {appData.problemCategory === 'connectivity' &&
         appData.problemType === 'packetflow' && <Packetflow />}
     </Flex>

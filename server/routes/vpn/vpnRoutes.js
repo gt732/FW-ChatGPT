@@ -23,6 +23,10 @@ export default function vpnRoutes(config) {
             Cookie: cookieHeaderValue,
           },
           responseType: "json",
+          followRedirect: true,
+          https: {
+            rejectUnauthorized: false,
+          },
         }
       );
 

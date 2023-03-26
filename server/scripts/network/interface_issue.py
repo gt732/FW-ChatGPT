@@ -3,6 +3,7 @@ from netmiko import ConnectHandler
 
 MAX_CHARS = 6000
 
+
 parser = argparse.ArgumentParser(
     description="Script to execute commands on a Fortigate firewall"
 )
@@ -12,8 +13,7 @@ parser.add_argument(
 parser.add_argument("--ssh-username", required=True, help="SSH username for the device")
 parser.add_argument("--ssh-password", required=True, help="SSH password for the device")
 parser.add_argument("--ssh-port", type=int, default=22, help="SSH port for the device")
-parser.add_argument("--phase1-name", required=True, help="Name of the VPN Phase 1")
-parser.add_argument("--phase2-name", required=True, help="Name of the VPN Phase 2")
+parser.add_argument("--interface", required=True, help="Interface name")
 args = parser.parse_args()
 
 
@@ -28,18 +28,15 @@ device = {
 
 
 debug_commands = [
-    "diagnose debug reset",
-    "diagnose debug application ike 15",
-    f"diagnose vpn ike log-filter name {args.phase1_name}",
-    "diagnose debug enable",
-    f"get vpn ipsec tunnel name {args.phase1_name}",
-    f"diagnose vpn tunnel list name {args.phase1_name}",
-    f"diag vpn tunnel up {args.phase2_name} {args.phase1_name} 1",
+    f"diagnose netlink interface list name {args.interface}",
+    f"diagnose hardware deviceinfo nic {args.interface}",
+    f"show system interface {args.interface}",
+    f"get system interface physical {args.interface}",
 ]
 
 
 with ConnectHandler(**device) as net_connect:
-    debug_output = ""
+    debug_output = f"""As a Senior Network/Firewall Engineer, you have been assigned to investigate a interface issue for interface {args.interface}\n"""
 
     for command in debug_commands:
         debug_output += f"Running command: {command}\n\n"
