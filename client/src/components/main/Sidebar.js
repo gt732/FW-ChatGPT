@@ -210,8 +210,11 @@ export default function Sidebar() {
           <option style={{ background: '#202324' }} value="problemcategory">
             Problem Category
           </option>
-          <option style={{ background: '#202324' }} value="performance">
-            Performance
+          <option style={{ background: '#202324' }} value="network">
+            Network
+          </option>
+          <option style={{ background: '#202324' }} value="system">
+            System
           </option>
           <option style={{ background: '#202324' }} value="connectivity">
             Connectivity
@@ -224,7 +227,7 @@ export default function Sidebar() {
           </option>
         </Select>
 
-        {appData.problemCategory === 'performance' && (
+        {appData.problemCategory === 'network' && (
           <>
             <Select
               py="20px"
@@ -235,6 +238,28 @@ export default function Sidebar() {
             >
               <option style={{ background: '#202324' }} value="problemtype">
                 Problem Type
+              </option>
+              <option style={{ background: '#202324' }} value="interfaces">
+                Interfaces
+              </option>
+            </Select>
+          </>
+        )}
+
+        {appData.problemCategory === 'system' && (
+          <>
+            <Select
+              py="20px"
+              onChange={handleProblemType}
+              bg="#202324"
+              pt="5px"
+              color="white"
+            >
+              <option style={{ background: '#202324' }} value="problemtype">
+                Problem Type
+              </option>
+              <option style={{ background: '#202324' }} value="fortiguard">
+                Fortiguard
               </option>
               <option style={{ background: '#202324' }} value="highcpu">
                 High CPU

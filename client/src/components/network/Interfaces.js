@@ -1,50 +1,44 @@
-import { Box, Button, Text } from '@chakra-ui/react';
-import React, { useEffect, useState } from 'react';
-import { Textarea } from '@chakra-ui/react';
+import React, { useState, useEffect } from 'react';
+import { Box, Button, Text, Textarea } from '@chakra-ui/react';
 import Disclaimer from '../main/Disclaimer';
 import Chatgpt from '../chatgpt/Chatgpt';
 
-export default function Vpn() {
-  const [tunnels, setTunnels] = useState([]);
+export default function Interfaces() {
+  const [intfs, setIntfs] = useState([]);
   const [buttonLoading, setButtonLoading] = useState([]);
   const [debugOutput, setDebugOutput] = useState('');
-  const [vpnDownChatGpt, setVpnDownChatGpt] = useState('');
+  const [ChatGptPrompt, setChatGptPrompt] = useState('');
   const [documentationLink, setDocumentationLink] = useState('');
 
-  function getVpnTunnels() {
-    // Get the list of VPN tunnels
-    fetch(`/vpn/get_tunnel_list`)
+  function getInterfaces() {
+    // Fetch the list of BGP neighbors
+    fetch(`/network/get_interface_list`)
       .then(response => response.json())
       .then(data => {
-        setTunnels(data.results);
-        setButtonLoading(data.results.map(() => false));
+        const interfaceValuesArray = Object.values(data.results);
+        setIntfs(interfaceValuesArray);
+        setButtonLoading(interfaceValuesArray.map(() => false));
       })
       .catch(error => {
         console.error(error);
       });
   }
 
-  function handleClick(tunnelName, index) {
-    // Get the phase2 name
-    const phase2Name = tunnels.filter(tunnel => tunnel.name === tunnelName)[0]
-      .proxyid[0].p2name;
-
+  function handleClick(intf, index) {
     const requestOptions = {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        p1Name: tunnelName,
-        p2Name: phase2Name,
+        intf: intf,
       }),
     };
     // Set loading state of the individual button to true
     setButtonLoading(buttonLoading.map((val, i) => (i === index ? true : val)));
-    setDebugOutput('');
-    // Run the tunnel down script
-    fetch('/vpn/tunnel_down_script', requestOptions)
-      .then(response => response.text()) // get the response as text
+
+    fetch('network/interface_issue_script', requestOptions)
+      .then(response => response.text())
       .then(data => {
         setDebugOutput(data);
 
@@ -65,11 +59,11 @@ export default function Vpn() {
   }
 
   useEffect(() => {
-    // Get the chatgpt prompt
-    fetch('/chatgpt_prompts/vpn/tunnel_down.txt')
+    // Fetch the chatgpt prompt
+    fetch('/chatgpt_prompts/network/interface_issue.txt')
       .then(response => response.text())
       .then(text => {
-        setVpnDownChatGpt(text);
+        setChatGptPrompt(text);
       })
       .catch(error => {
         console.error(error);
@@ -77,8 +71,8 @@ export default function Vpn() {
   }, []);
 
   useEffect(() => {
-    // Get the documentation link
-    fetch('/chatgpt_prompts/vpn/tunnel_down_link.txt')
+    // Fetch the documentation link
+    fetch('/chatgpt_prompts/network/interface_issue_link.txt')
       .then(response => response.text())
       .then(text => {
         setDocumentationLink(text);
@@ -89,32 +83,32 @@ export default function Vpn() {
   }, []);
 
   useEffect(() => {
-    getVpnTunnels();
+    getInterfaces();
   }, []);
 
   return [
-    <Text fontSize={15} color="white">
-      👉 Instructions: Click the VPN tunnel to gather debugs, once complete
-      click on Run FortiGPT 👈
+    <Text p="10px" fontSize={15} color="white">
+      👉 Instructions: Click on the Interface to gather debugs and statistics,
+      once complete click on Run FortiGPT 👈
     </Text>,
 
     <Box my="4">
-      {tunnels.map((tunnel, index) => (
+      {intfs.map((intf, index) => (
         <Button
-          onClick={() => handleClick(tunnel.name, index)}
-          colorScheme={tunnel.proxyid[0].status == 'down' ? 'red' : 'green'}
-          key={tunnel.name}
+          onClick={() => handleClick(intf.name, index)}
+          colorScheme={intf.link == true ? 'green' : 'red'}
+          key={intf.name}
           borderRadius="full"
           m="2"
           isLoading={buttonLoading[index]}
-          loadingText={tunnel.name}
+          loadingText={intf.name}
         >
-          {tunnel.name}
+          {intf.name}
         </Button>
       ))}
     </Box>,
 
-    <Text ml={2} color="white" fontWeight="bold">
+    <Text p="15px" color="white" fontWeight="bold">
       ✨ DEBUG OUTPUT ✨
     </Text>,
 
@@ -131,7 +125,7 @@ export default function Vpn() {
     </>,
     <>
       {debugOutput && (
-        <Chatgpt debugOutput={debugOutput} chatGptPrompt={vpnDownChatGpt} />
+        <Chatgpt debugOutput={debugOutput} chatGptPrompt={ChatGptPrompt} />
       )}
     </>,
   ];

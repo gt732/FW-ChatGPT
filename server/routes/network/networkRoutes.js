@@ -4,8 +4,8 @@ import { spawn } from "child_process";
 
 const router = express.Router();
 
-export default function routingRoutes(config) {
-  router.get("/get_bgp_list", async (req, res) => {
+export default function networkRoutes(config) {
+  router.get("/get_interface_list", async (req, res) => {
     // Get the cookies from the request cookies object
     const cookies = req.cookies;
     // Construct the cookie header value
@@ -16,7 +16,7 @@ export default function routingRoutes(config) {
     try {
       // Make a request to the firewall device with the cookies and CSRF token
       const response = await got.get(
-        `${config.transport}://${config.host}:${config.port}/api/v2/monitor/router/bgp/neighbors`,
+        `${config.transport}://${config.host}:${config.port}/api/v2/monitor/system/interface`,
         {
           headers: {
             "X-CSRFTOKEN": req.headers["x-csrftoken"],
@@ -38,10 +38,10 @@ export default function routingRoutes(config) {
     }
   });
 
-  router.post("/bgp_down_script", (req, res) => {
-    const { bgpNeighbor } = req.body;
+  router.post("/interface_issue_script", (req, res) => {
+    const { intf } = req.body;
     // Execute the script
-    const command = `python ./scripts/routing/bgp_down.py --device-host ${config.host} --ssh-username ${config.username} --ssh-password ${config.password} --ssh-port ${config.sshPort} --bgp-neighbor ${bgpNeighbor}`;
+    const command = `python ./scripts/network/interface_issue.py --device-host ${config.host} --ssh-username ${config.username} --ssh-password ${config.password} --ssh-port ${config.sshPort} --interface ${intf}`;
     const process = spawn(command, [], { shell: true });
 
     // Handle output from the script

@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Box, Button, Text, Textarea } from '@chakra-ui/react';
 import Disclaimer from '../main/Disclaimer';
 import Chatgpt from '../chatgpt/Chatgpt';
-import { useToast } from '@chakra-ui/react';
 
 export default function Bgp() {
   const [bgpNei, setBgpNei] = useState([]);
@@ -10,7 +9,6 @@ export default function Bgp() {
   const [debugOutput, setDebugOutput] = useState('');
   const [ChatGptPrompt, setChatGptPrompt] = useState('');
   const [documentationLink, setDocumentationLink] = useState('');
-  const toast = useToast();
 
   function getBgpNeighbors() {
     // Fetch the list of BGP neighbors
@@ -21,13 +19,6 @@ export default function Bgp() {
         setButtonLoading(data.results.map(() => false));
       })
       .catch(error => {
-        toast({
-          title: `Try logging in again`,
-          status: 'error',
-          duration: 5000,
-          position: 'bottom-right',
-          isClosable: true,
-        });
         console.error(error);
       });
   }

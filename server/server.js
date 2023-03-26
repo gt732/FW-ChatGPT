@@ -11,9 +11,10 @@ import { fileURLToPath } from "url";
 
 // All routes are defined here
 import vpnRoutes from "./routes/vpn/vpnRoutes.js";
-import performanceRoutes from "./routes/performance/performanceRoutes.js";
+import systemRoutes from "./routes/system/systemRoutes.js";
 import routingRoutes from "./routes/routing/routingRoutes.js";
 import connectivityRoutes from "./routes/connectivity/connectivityRoutes.js";
+import networkRoutes from "./routes/network/networkRoutes.js";
 
 // All Constants are defined here
 const router = express();
@@ -32,9 +33,10 @@ router.use(express.static(path.join(__dirname, "./chatgpt_prompts")));
 
 // All Express routes are defined here
 router.use("/vpn", vpnRoutes(config));
-router.use("/performance", performanceRoutes(config));
+router.use("/system", systemRoutes(config));
 router.use("/routing", routingRoutes(config));
 router.use("/connectivity", connectivityRoutes(config));
+router.use("/network", networkRoutes(config));
 router.use(express.static(root));
 
 // Login route

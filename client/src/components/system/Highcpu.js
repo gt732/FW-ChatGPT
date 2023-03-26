@@ -13,7 +13,7 @@ export default function Highcpu() {
     // Run the high cpu debug script
     setLoading(true);
     setDebugOutput('');
-    fetch('/performance/high_cpu_script', {
+    fetch('/system/high_cpu_script', {
       method: 'POST',
     })
       .then(response => response.text())
@@ -30,7 +30,7 @@ export default function Highcpu() {
 
   useEffect(() => {
     // Get the chatgpt prompt
-    fetch('/chatgpt_prompts/performance/high_cpu.txt')
+    fetch('/chatgpt_prompts/system/high_cpu.txt')
       .then(response => response.text())
       .then(text => {
         setChatGptPrompt(text);
@@ -42,7 +42,7 @@ export default function Highcpu() {
 
   useEffect(() => {
     // Get the documentation link
-    fetch('/chatgpt_prompts/performance/high_cpu_link.txt')
+    fetch('/chatgpt_prompts/system/high_cpu_link.txt')
       .then(response => response.text())
       .then(text => {
         setDocumentationLink(text);

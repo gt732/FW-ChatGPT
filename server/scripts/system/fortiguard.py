@@ -3,6 +3,7 @@ from netmiko import ConnectHandler
 
 MAX_CHARS = 6000
 
+
 parser = argparse.ArgumentParser(
     description="Script to execute commands on a Fortigate firewall"
 )
@@ -12,8 +13,6 @@ parser.add_argument(
 parser.add_argument("--ssh-username", required=True, help="SSH username for the device")
 parser.add_argument("--ssh-password", required=True, help="SSH password for the device")
 parser.add_argument("--ssh-port", type=int, default=22, help="SSH port for the device")
-parser.add_argument("--phase1-name", required=True, help="Name of the VPN Phase 1")
-parser.add_argument("--phase2-name", required=True, help="Name of the VPN Phase 2")
 args = parser.parse_args()
 
 
@@ -28,13 +27,11 @@ device = {
 
 
 debug_commands = [
-    "diagnose debug reset",
-    "diagnose debug application ike 15",
-    f"diagnose vpn ike log-filter name {args.phase1_name}",
-    "diagnose debug enable",
-    f"get vpn ipsec tunnel name {args.phase1_name}",
-    f"diagnose vpn tunnel list name {args.phase1_name}",
-    f"diag vpn tunnel up {args.phase2_name} {args.phase1_name} 1",
+    "exec ping service.fortiguard.net",
+    "exec ping update.fortiguard.net",
+    "exec ping guard.fortinet.net",
+    "diagnose debug rating",
+    "show system fortiguard",
 ]
 
 
