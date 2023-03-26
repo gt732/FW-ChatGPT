@@ -213,8 +213,8 @@ export default function Sidebar() {
           <option style={{ background: '#202324' }} value="network">
             Network
           </option>
-          <option style={{ background: '#202324' }} value="performance">
-            Performance
+          <option style={{ background: '#202324' }} value="system">
+            System
           </option>
           <option style={{ background: '#202324' }} value="connectivity">
             Connectivity
@@ -246,7 +246,7 @@ export default function Sidebar() {
           </>
         )}
 
-        {appData.problemCategory === 'performance' && (
+        {appData.problemCategory === 'system' && (
           <>
             <Select
               py="20px"

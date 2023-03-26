@@ -2,8 +2,8 @@ import React, { useContext } from 'react';
 import { Flex, Heading, Text } from '@chakra-ui/react';
 import { AppContext } from '../../AppContext';
 import Vpn from '../vpn/Vpn';
-import Highcpu from '../performance/Highcpu';
-import Highmemory from '../performance/Highmemory';
+import Highcpu from '../system/Highcpu';
+import Highmemory from '../system/Highmemory';
 import Bgp from '../routing/Bgp';
 import Packetflow from '../connectivity/Packetflow';
 import Interfaces from '../network/Interfaces';
@@ -21,7 +21,7 @@ export default function Main() {
         🤖 FortiGPT Troubleshooting Assistant 🤖
       </Heading>
       {(appData.problemCategory === 'problemcategory' ||
-        appData.problemCategory === 'performance' ||
+        appData.problemCategory === 'system' ||
         appData.problemCategory === 'connectivity' ||
         appData.problemCategory === 'vpn' ||
         appData.problemCategory === 'network' ||
@@ -41,10 +41,10 @@ export default function Main() {
       {appData.problemCategory === 'network' &&
         appData.problemType === 'interfaces' && <Interfaces />}
 
-      {appData.problemCategory === 'performance' &&
+      {appData.problemCategory === 'system' &&
         appData.problemType === 'highcpu' && <Highcpu />}
 
-      {appData.problemCategory === 'performance' &&
+      {appData.problemCategory === 'system' &&
         appData.problemType === 'highmemory' && <Highmemory />}
 
       {appData.problemCategory === 'vpn' &&
