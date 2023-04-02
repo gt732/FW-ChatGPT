@@ -11,8 +11,7 @@ export default function Interfaces() {
   const [documentationLink, setDocumentationLink] = useState('');
 
   function getInterfaces() {
-    // Fetch the list of BGP neighbors
-    fetch(`/network/get_interface_list`)
+    fetch(`/express/network/get_interface_list`)
       .then(response => response.json())
       .then(data => {
         const interfaceValuesArray = Object.values(data.results);
@@ -34,15 +33,13 @@ export default function Interfaces() {
         intf: intf,
       }),
     };
-    // Set loading state of the individual button to true
     setButtonLoading(buttonLoading.map((val, i) => (i === index ? true : val)));
 
-    fetch('network/interface_issue_script', requestOptions)
+    fetch('/express/network/interface_issue_script', requestOptions)
       .then(response => response.text())
       .then(data => {
         setDebugOutput(data);
 
-        // Set loading state of the individual button to false
         setButtonLoading(
           buttonLoading.map((val, i) => (i === index ? false : val))
         );
@@ -51,7 +48,6 @@ export default function Interfaces() {
       .catch(error => {
         setDebugOutput('Try Logging in again');
 
-        // Set loading state of the individual button to false
         setButtonLoading(
           buttonLoading.map((val, i) => (i === index ? false : val))
         );
@@ -59,8 +55,7 @@ export default function Interfaces() {
   }
 
   useEffect(() => {
-    // Fetch the chatgpt prompt
-    fetch('/chatgpt_prompts/network/interface_issue.txt')
+    fetch('/express/chatgpt_prompts/network/interface_issue.txt')
       .then(response => response.text())
       .then(text => {
         setChatGptPrompt(text);
@@ -71,8 +66,7 @@ export default function Interfaces() {
   }, []);
 
   useEffect(() => {
-    // Fetch the documentation link
-    fetch('/chatgpt_prompts/network/interface_issue_link.txt')
+    fetch('/express/chatgpt_prompts/network/interface_issue_link.txt')
       .then(response => response.text())
       .then(text => {
         setDocumentationLink(text);

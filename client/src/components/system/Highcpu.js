@@ -10,10 +10,9 @@ export default function Highcpu() {
   const [documentationLink, setDocumentationLink] = useState('');
 
   function handleClick() {
-    // Run the high cpu debug script
     setLoading(true);
     setDebugOutput('');
-    fetch('/system/high_cpu_script', {
+    fetch('/express/system/high_cpu_script', {
       method: 'POST',
     })
       .then(response => response.text())
@@ -29,8 +28,7 @@ export default function Highcpu() {
   }
 
   useEffect(() => {
-    // Get the chatgpt prompt
-    fetch('/chatgpt_prompts/system/high_cpu.txt')
+    fetch('/express/chatgpt_prompts/system/high_cpu.txt')
       .then(response => response.text())
       .then(text => {
         setChatGptPrompt(text);
@@ -41,8 +39,7 @@ export default function Highcpu() {
   }, []);
 
   useEffect(() => {
-    // Get the documentation link
-    fetch('/chatgpt_prompts/system/high_cpu_link.txt')
+    fetch('/express/chatgpt_prompts/system/high_cpu_link.txt')
       .then(response => response.text())
       .then(text => {
         setDocumentationLink(text);

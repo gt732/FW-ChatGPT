@@ -7,7 +7,6 @@ export default function Chatgpt(props) {
   const [loading, setLoading] = useState(false);
 
   function fetchChatGptResponse() {
-    // Fetch the chatgpt response from the API
     setLoading(true);
     const options = {
       method: 'POST',
@@ -21,7 +20,7 @@ export default function Chatgpt(props) {
       }),
     };
 
-    fetch('/chatgpt', options)
+    fetch('/express/chatgpt', options)
       .then(response => response.json())
       .then(data => {
         setChatGptResponse(data.content);

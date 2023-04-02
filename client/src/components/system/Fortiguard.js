@@ -10,10 +10,9 @@ export default function Fortiguard() {
   const [documentationLink, setDocumentationLink] = useState('');
 
   function handleClick() {
-    // Run the fortiguard debug script
     setLoading(true);
     setDebugOutput('');
-    fetch('/system/fortiguard_script', {
+    fetch('/express/system/fortiguard_script', {
       method: 'POST',
     })
       .then(response => response.text())
@@ -29,8 +28,7 @@ export default function Fortiguard() {
   }
 
   useEffect(() => {
-    // Get the chatgpt prompt
-    fetch('/chatgpt_prompts/system/fortiguard.txt')
+    fetch('/express/chatgpt_prompts/system/fortiguard.txt')
       .then(response => response.text())
       .then(text => {
         setChatGptPrompt(text);
@@ -41,8 +39,7 @@ export default function Fortiguard() {
   }, []);
 
   useEffect(() => {
-    // Get the documentation link
-    fetch('/chatgpt_prompts/system/fortiguard_link.txt')
+    fetch('/express/chatgpt_prompts/system/fortiguard_link.txt')
       .then(response => response.text())
       .then(text => {
         setDocumentationLink(text);

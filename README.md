@@ -1,10 +1,9 @@
 # FortiGPT
 ![alt text](https://i.imgur.com/benUs5x.png)
 
-FortiGPT Troubleshooting Assistant is a web app that helps network administrators troubleshoot common networking issues using natural language processing. This app uses the FortiGate API and SSH to gather debug commands and sends them to the ChatGPT API for analysis. The app then provides troubleshooting advice based on the analysis results.
+FortiGPT Troubleshooting Assistant is a web app that helps network administrators troubleshoot common networking issues using natural language processing. This app uses the FortiGate API and SSH to gather debug commands and sends them to the ChatGPT API for analysis. The app then provides troubleshooting advice based on the analysis results. Additionally, there is a chatbot available that enables you to use a LLM combined with the documentation.
 
 # Tested on Fortigate 7.2.4 VM
-## The app uses ReactJS for frontend and NodeJS/Express for backend
 
 ## Getting Started
 
@@ -16,40 +15,43 @@ To use FortiGPT Troubleshooting Assistant, simply select a problem category (e.g
 - Routing - BGP Down
 - VPN - VPN Down
 - Network - Interfaces
+- ChatMode
 
 ## Future Development
-- If the community expresses interest in this tool, I will incorporate additional categories and problem types.
+ If the community expresses interest in this tool, I will incorporate additional categories and problem types.
 
 ## Requirements
 
-FortiGPT Troubleshooting Assistant requires no dependencies to be installed. Instead, it can be run as a Docker container.
+FortiGPT Troubleshooting Assistant requires no dependencies to be installed. Instead, it can be run as a Docker container using docker compose.
 
 ## Installation
 
 To run FortiGPT Troubleshooting Assistant, simply follow the steps below:
 
-## Docker
+## Docker Compose
 
 
-Run the docker command to download the image and simply browse to the container
+Copy the docker-compose file from the repo and run docker compose up. Make sure to modify the env with your openai api key.
+If you want to build the images locally, clone the repo and use the ddocker-compose-dev file.
 ```
-docker run \
-  -p 5005:5005 \
-  -e OPENAI_API_KEY=your-api-key \
-  gt732/fortigpt-react
+docker compose up
 ```
 
-## Login Screen
-
-![alt text](https://i.imgur.com/0iEmaGU.png)
 ## Demo
-- VPN Phase1 pre-share key mis-match
+ChatMode
+![alt text](https://i.imgur.com/TNT8NAY.png)
+
+![alt text](https://i.imgur.com/6HUbVjF.png)
+
+![alt text](https://i.imgur.com/PJHikTK.png)
+
+VPN Phase1 pre-share key mis-match
 ![alt text](https://i.imgur.com/gew7aza.png)
 
-- Debug Flow
+Debug Flow
 ![alt text](https://i.imgur.com/BErqcs5.png)
 
-- BGP Down
+BGP Down
 ![alt test](https://i.imgur.com/0k5XH4i.png)
 ## Contributing
 Contributions are welcome! To contribute to FortiGPT Troubleshooting Assistant, simply fork the GitHub repository and submit a pull request with your changes.

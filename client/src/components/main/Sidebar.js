@@ -7,14 +7,27 @@ import {
   Heading,
   Select,
   VStack,
+  Switch,
+  HStack,
+  Center,
 } from '@chakra-ui/react';
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useFormik } from 'formik';
 import { useToast } from '@chakra-ui/react';
 import { AppContext } from '../../AppContext';
 
 export default function Sidebar() {
   const { appData, setAppData } = useContext(AppContext);
+  const [isChecked, setIsChecked] = useState(false);
+
+  const handleToggle = newIsChecked => {
+    setIsChecked(newIsChecked);
+    setAppData({
+      ...appData,
+      fortiGptChatMode: newIsChecked,
+    });
+  };
+
   const toast = useToast();
   const formik = useFormik({
     initialValues: {
@@ -26,7 +39,7 @@ export default function Sidebar() {
       sshPort: '',
     },
     onSubmit: (values, { setSubmitting }) => {
-      fetch('/login', {
+      fetch('/express/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -101,6 +114,18 @@ export default function Sidebar() {
       <Heading as="h1" color="white" size="xl">
         FortiGPT 🤖
       </Heading>
+      <HStack pt={5}>
+        <Center>
+          <FormLabel pt={1} color="white" htmlFor="isChecked">
+            Toggle ChatMode
+          </FormLabel>
+          <Switch
+            size="lg"
+            isChecked={isChecked}
+            onChange={e => handleToggle(e.target.checked)}
+          />
+        </Center>
+      </HStack>
       <br />
 
       <FormControl
@@ -200,131 +225,133 @@ export default function Sidebar() {
         </Button>
       </FormControl>
 
-      <VStack maxW="300px" spacing={4}>
-        <Select
-          bg="#202324"
-          pt="5px"
-          color="white"
-          onChange={handleProblemCategory}
-        >
-          <option style={{ background: '#202324' }} value="problemcategory">
-            Problem Category
-          </option>
-          <option style={{ background: '#202324' }} value="network">
-            Network
-          </option>
-          <option style={{ background: '#202324' }} value="system">
-            System
-          </option>
-          <option style={{ background: '#202324' }} value="connectivity">
-            Connectivity
-          </option>
-          <option style={{ background: '#202324' }} value="routing">
-            Routing
-          </option>
-          <option style={{ background: '#202324' }} value="vpn">
-            VPN
-          </option>
-        </Select>
+      {!appData.fortiGptChatMode && (
+        <VStack maxW="300px" spacing={4}>
+          <Select
+            bg="#202324"
+            pt="5px"
+            color="white"
+            onChange={handleProblemCategory}
+          >
+            <option style={{ background: '#202324' }} value="problemcategory">
+              Problem Category
+            </option>
+            <option style={{ background: '#202324' }} value="network">
+              Network
+            </option>
+            <option style={{ background: '#202324' }} value="system">
+              System
+            </option>
+            <option style={{ background: '#202324' }} value="connectivity">
+              Connectivity
+            </option>
+            <option style={{ background: '#202324' }} value="routing">
+              Routing
+            </option>
+            <option style={{ background: '#202324' }} value="vpn">
+              VPN
+            </option>
+          </Select>
 
-        {appData.problemCategory === 'network' && (
-          <>
-            <Select
-              py="20px"
-              onChange={handleProblemType}
-              bg="#202324"
-              pt="5px"
-              color="white"
-            >
-              <option style={{ background: '#202324' }} value="problemtype">
-                Problem Type
-              </option>
-              <option style={{ background: '#202324' }} value="interfaces">
-                Interfaces
-              </option>
-            </Select>
-          </>
-        )}
+          {appData.problemCategory === 'network' && (
+            <>
+              <Select
+                py="20px"
+                onChange={handleProblemType}
+                bg="#202324"
+                pt="5px"
+                color="white"
+              >
+                <option style={{ background: '#202324' }} value="problemtype">
+                  Problem Type
+                </option>
+                <option style={{ background: '#202324' }} value="interfaces">
+                  Interfaces
+                </option>
+              </Select>
+            </>
+          )}
 
-        {appData.problemCategory === 'system' && (
-          <>
-            <Select
-              py="20px"
-              onChange={handleProblemType}
-              bg="#202324"
-              pt="5px"
-              color="white"
-            >
-              <option style={{ background: '#202324' }} value="problemtype">
-                Problem Type
-              </option>
-              <option style={{ background: '#202324' }} value="fortiguard">
-                Fortiguard
-              </option>
-              <option style={{ background: '#202324' }} value="highcpu">
-                High CPU
-              </option>
-              <option style={{ background: '#202324' }} value="highmemory">
-                High Memory
-              </option>
-            </Select>
-          </>
-        )}
+          {appData.problemCategory === 'system' && (
+            <>
+              <Select
+                py="20px"
+                onChange={handleProblemType}
+                bg="#202324"
+                pt="5px"
+                color="white"
+              >
+                <option style={{ background: '#202324' }} value="problemtype">
+                  Problem Type
+                </option>
+                <option style={{ background: '#202324' }} value="fortiguard">
+                  Fortiguard
+                </option>
+                <option style={{ background: '#202324' }} value="highcpu">
+                  High CPU
+                </option>
+                <option style={{ background: '#202324' }} value="highmemory">
+                  High Memory
+                </option>
+              </Select>
+            </>
+          )}
 
-        {appData.problemCategory === 'connectivity' && (
-          <>
-            <Select
-              onChange={handleProblemType}
-              bg="#202324"
-              pt="5px"
-              color="white"
-            >
-              <option style={{ background: '#202324' }} value="problemtype">
-                Problem Type
-              </option>
-              <option style={{ background: '#202324' }} value="packetflow">
-                Packet Flow
-              </option>
-            </Select>
-          </>
-        )}
+          {appData.problemCategory === 'connectivity' && (
+            <>
+              <Select
+                onChange={handleProblemType}
+                bg="#202324"
+                pt="5px"
+                color="white"
+              >
+                <option style={{ background: '#202324' }} value="problemtype">
+                  Problem Type
+                </option>
+                <option style={{ background: '#202324' }} value="packetflow">
+                  Packet Flow
+                </option>
+              </Select>
+            </>
+          )}
 
-        {appData.problemCategory === 'routing' && (
-          <>
-            <Select
-              onChange={handleProblemType}
-              bg="#202324"
-              pt="5px"
-              color="white"
-            >
-              <option style={{ background: '#202324' }} value="problemtype">
-                Problem Type
-              </option>
-              <option style={{ background: '#202324' }} value="bgp">
-                BGP Down
-              </option>
-            </Select>
-          </>
-        )}
+          {appData.problemCategory === 'routing' && (
+            <>
+              <Select
+                onChange={handleProblemType}
+                bg="#202324"
+                pt="5px"
+                color="white"
+              >
+                <option style={{ background: '#202324' }} value="problemtype">
+                  Problem Type
+                </option>
+                <option style={{ background: '#202324' }} value="bgp">
+                  BGP Down
+                </option>
+              </Select>
+            </>
+          )}
 
-        {appData.problemCategory === 'vpn' && (
-          <>
-            <Select
-              onChange={handleProblemType}
-              bg="#202324"
-              pt="5px"
-              color="white"
-            >
-              <option style={{ background: '#202324' }} value="problemtype">
-                Problem Type
-              </option>
-              <option style={{ background: '#202324' }} value="vpndown">
-                VPN Down
-              </option>
-            </Select>
-          </>
-        )}
-      </VStack>
+          {appData.problemCategory === 'vpn' && (
+            <>
+              <Select
+                onChange={handleProblemType}
+                bg="#202324"
+                pt="5px"
+                color="white"
+              >
+                <option style={{ background: '#202324' }} value="problemtype">
+                  Problem Type
+                </option>
+                <option style={{ background: '#202324' }} value="vpndown">
+                  VPN Down
+                </option>
+              </Select>
+            </>
+          )}
+        </VStack>
+      )}
     </Box>
   );
 }
