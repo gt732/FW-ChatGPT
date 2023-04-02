@@ -32,7 +32,7 @@ To run FortiGPT Troubleshooting Assistant, simply follow the steps below:
 
 
 Copy the docker-compose file from the repo and run docker compose up. Make sure to modify the env with your openai api key.
-If you want to build the images locally, clone the repo and use the ddocker-compose-dev file.
+If you want to build the images locally, clone the repo and use the docker-compose-dev file.
 ```
 docker compose up
 ```
