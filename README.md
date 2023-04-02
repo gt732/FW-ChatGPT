@@ -36,6 +36,7 @@ If you want to build the images locally, clone the repo and use the docker-compo
 ```
 docker compose up
 ```
+Connect to the fortigpt-nginx reverse proxy container on port 3050 and you are all set.
 
 ## Demo
 ChatMode
