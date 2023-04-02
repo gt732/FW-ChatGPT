@@ -1,0 +1,19 @@
+version: '3'
+
+services:
+  client:
+    stdin_open: true
+    image: gt732/fortigpt-client
+  nginx:
+    depends_on:
+      - api
+      - client
+    restart: always
+    image: gt732/fortigpt-nginx
+    ports:
+      - "3050:80"
+  api:
+    image: gt732/fortigpt-api
+    command: ["sh", "-c", "node server.js & cd fastapi && uvicorn main:app --host 0.0.0.0 --port 9000"]
+    environment:
+      - OPENAI_API_KEY=your_openai_api_key

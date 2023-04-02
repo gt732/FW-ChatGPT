@@ -2,7 +2,6 @@ import React from 'react';
 import { Text, Link, HStack } from '@chakra-ui/react';
 
 export default function Disclaimer(props) {
-  // Display the disclaimer
   return (
     <HStack pl="10px">
       <Text color="white" m="10px" fontSize={15} maxWidth="2xl">

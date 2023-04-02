@@ -11,8 +11,7 @@ export default function Bgp() {
   const [documentationLink, setDocumentationLink] = useState('');
 
   function getBgpNeighbors() {
-    // Fetch the list of BGP neighbors
-    fetch(`/routing/get_bgp_list`)
+    fetch(`/express/routing/get_bgp_list`)
       .then(response => response.json())
       .then(data => {
         setBgpNei(data.results);
@@ -33,15 +32,13 @@ export default function Bgp() {
         bgpNeighbor: bgpNeighbor,
       }),
     };
-    // Set loading state of the individual button to true
     setButtonLoading(buttonLoading.map((val, i) => (i === index ? true : val)));
     setDebugOutput('');
-    fetch('routing/bgp_down_script', requestOptions)
+    fetch('/express/routing/bgp_down_script', requestOptions)
       .then(response => response.text()) // get the response as text
       .then(data => {
         setDebugOutput(data);
 
-        // Set loading state of the individual button to false
         setButtonLoading(
           buttonLoading.map((val, i) => (i === index ? false : val))
         );
@@ -50,7 +47,6 @@ export default function Bgp() {
       .catch(error => {
         setDebugOutput('Try Logging in again');
 
-        // Set loading state of the individual button to false
         setButtonLoading(
           buttonLoading.map((val, i) => (i === index ? false : val))
         );
@@ -58,8 +54,7 @@ export default function Bgp() {
   }
 
   useEffect(() => {
-    // Fetch the chatgpt prompt
-    fetch('/chatgpt_prompts/routing/bgp_down.txt')
+    fetch('/express/chatgpt_prompts/routing/bgp_down.txt')
       .then(response => response.text())
       .then(text => {
         setChatGptPrompt(text);
@@ -70,8 +65,7 @@ export default function Bgp() {
   }, []);
 
   useEffect(() => {
-    // Fetch the documentation link
-    fetch('/chatgpt_prompts/routing/bgp_down_link.txt')
+    fetch('/express/chatgpt_prompts/routing/bgp_down_link.txt')
       .then(response => response.text())
       .then(text => {
         setDocumentationLink(text);

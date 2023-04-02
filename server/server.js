@@ -4,6 +4,7 @@ import cookieParser from "cookie-parser";
 import got from "got";
 import tough from "tough-cookie";
 import { Configuration, OpenAIApi } from "openai";
+import cors from "cors";
 
 // Node.js built-in modules
 import path from "path";
@@ -18,18 +19,26 @@ import networkRoutes from "./routes/network/networkRoutes.js";
 
 // All Constants are defined here
 const router = express();
+// Enable CORS
+router.use(
+  cors({
+    origin: "*",
+    credentials: true,
+    methods: "*",
+    allowedHeaders: "*",
+  })
+);
 const config = {};
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const configuration = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
 });
 const openai = new OpenAIApi(configuration);
-const root = path.join(__dirname, "..", "client", "build");
 
 // All Express middleware are defined here
 router.use(express.json());
 router.use(cookieParser());
-router.use(express.static(path.join(__dirname, "./chatgpt_prompts")));
+router.use("/", express.static(path.join(__dirname, "chatgpt_prompts")));
 
 // All Express routes are defined here
 router.use("/vpn", vpnRoutes(config));
@@ -37,7 +46,6 @@ router.use("/system", systemRoutes(config));
 router.use("/routing", routingRoutes(config));
 router.use("/connectivity", connectivityRoutes(config));
 router.use("/network", networkRoutes(config));
-router.use(express.static(root));
 
 // Login route
 router.post("/login", async (req, res) => {
@@ -102,11 +110,6 @@ router.post("/chatgpt", async (req, res) => {
     console.error(error);
     res.status(500).send("Internal Server Error");
   }
-});
-
-// Home route
-router.use("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "..", "client", "build", "index.html"));
 });
 
 // Start the server

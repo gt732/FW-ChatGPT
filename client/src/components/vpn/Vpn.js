@@ -12,8 +12,7 @@ export default function Vpn() {
   const [documentationLink, setDocumentationLink] = useState('');
 
   function getVpnTunnels() {
-    // Get the list of VPN tunnels
-    fetch(`/vpn/get_tunnel_list`)
+    fetch('/express/vpn/get_tunnel_list')
       .then(response => response.json())
       .then(data => {
         setTunnels(data.results);
@@ -25,7 +24,6 @@ export default function Vpn() {
   }
 
   function handleClick(tunnelName, index) {
-    // Get the phase2 name
     const phase2Name = tunnels.filter(tunnel => tunnel.name === tunnelName)[0]
       .proxyid[0].p2name;
 
@@ -42,13 +40,11 @@ export default function Vpn() {
     // Set loading state of the individual button to true
     setButtonLoading(buttonLoading.map((val, i) => (i === index ? true : val)));
     setDebugOutput('');
-    // Run the tunnel down script
-    fetch('/vpn/tunnel_down_script', requestOptions)
+    fetch('/express/vpn/tunnel_down_script', requestOptions)
       .then(response => response.text()) // get the response as text
       .then(data => {
         setDebugOutput(data);
 
-        // Set loading state of the individual button to false
         setButtonLoading(
           buttonLoading.map((val, i) => (i === index ? false : val))
         );
@@ -57,7 +53,6 @@ export default function Vpn() {
       .catch(error => {
         setDebugOutput('Try Logging in again');
 
-        // Set loading state of the individual button to false
         setButtonLoading(
           buttonLoading.map((val, i) => (i === index ? false : val))
         );
@@ -65,8 +60,7 @@ export default function Vpn() {
   }
 
   useEffect(() => {
-    // Get the chatgpt prompt
-    fetch('/chatgpt_prompts/vpn/tunnel_down.txt')
+    fetch('/express/chatgpt_prompts/vpn/tunnel_down.txt')
       .then(response => response.text())
       .then(text => {
         setVpnDownChatGpt(text);
@@ -77,8 +71,7 @@ export default function Vpn() {
   }, []);
 
   useEffect(() => {
-    // Get the documentation link
-    fetch('/chatgpt_prompts/vpn/tunnel_down_link.txt')
+    fetch('/express/chatgpt_prompts/vpn/tunnel_down_link.txt')
       .then(response => response.text())
       .then(text => {
         setDocumentationLink(text);

@@ -1,0 +1,5 @@
+netmiko==3.4.0
+fastapi[all]
+langchain
+openai
+faiss-cpu

@@ -25,8 +25,7 @@ export default function Packetflow() {
       destinationport: '',
     },
     onSubmit: (values, { setSubmitting }) => {
-      // Run the packet flow debug script
-      fetch('/connectivity/packet_flow_script', {
+      fetch('/express/connectivity/packet_flow_script', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -50,8 +49,7 @@ export default function Packetflow() {
   });
 
   useEffect(() => {
-    // Get the chatgpt prompt
-    fetch('/chatgpt_prompts/connectivity/packet_flow.txt')
+    fetch('/express/chatgpt_prompts/connectivity/packet_flow.txt')
       .then(response => response.text())
       .then(text => {
         setChatGptPrompt(text);
@@ -62,8 +60,7 @@ export default function Packetflow() {
   }, []);
 
   useEffect(() => {
-    // Get the documentation link
-    fetch('/chatgpt_prompts/connectivity/packet_flow_link.txt')
+    fetch('/express/chatgpt_prompts/connectivity/packet_flow_link.txt')
       .then(response => response.text())
       .then(text => {
         setDocumentationLink(text);
