@@ -43,7 +43,6 @@ ChatMode
 
 ![alt text](https://i.imgur.com/6HUbVjF.png)
 
-![alt text](https://i.imgur.com/PJHikTK.png)
 
 VPN Phase1 pre-share key mis-match
 ![alt text](https://i.imgur.com/gew7aza.png)
