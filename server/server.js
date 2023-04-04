@@ -108,7 +108,7 @@ router.post("/chatgpt", async (req, res) => {
     res.json(completion.data.choices[0].message);
   } catch (error) {
     console.error(error);
-    res.status(500).send("Internal Server Error");
+    res.status(500).send("Error while communicating with OpenAI");
   }
 });
 
