@@ -1,5 +1,4 @@
-# FortiGPT
-![alt text](https://i.imgur.com/benUs5x.png)
+# FW-ChatGPT
 
 FortiGPT Troubleshooting Assistant is a web app that helps network administrators troubleshoot common networking issues using natural language processing. This app uses the FortiGate API and SSH to gather debug commands and sends them to the ChatGPT API for analysis. The app then provides troubleshooting advice based on the analysis results. Additionally, there is a chatbot available that enables you to use a LLM combined with the documentation.
 
