@@ -37,21 +37,7 @@ docker compose up
 ```
 Connect to the FW-gpt-nginx reverse proxy container on port 3050 and you are all set.
 
-## Demo
-ChatMode
-![alt text](https://i.imgur.com/TNT8NAY.png)
 
-![alt text](https://i.imgur.com/6HUbVjF.png)
-
-
-VPN Phase1 pre-share key mis-match
-![alt text](https://i.imgur.com/gew7aza.png)
-
-Debug Flow
-![alt text](https://i.imgur.com/BErqcs5.png)
-
-BGP Down
-![alt test](https://i.imgur.com/0k5XH4i.png)
 ## Contributing
 Contributions are welcome! To contribute to FW-GPT Troubleshooting Assistant, simply fork the GitHub repository and submit a pull request with your changes.
 
